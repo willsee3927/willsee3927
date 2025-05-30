@@ -4,45 +4,135 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will Charles – Portfolio</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+        }
+        .portfolio-item {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
-<body>
-    <header>
-        <h1>Will Charles</h1>
-        <p>Data Scientist & ML Enthusiast</p>
-    </header>
-
-    <section id="about">
-        <h2>About Me</h2>
-        <p>
-            I'm a recent graduate with a Master's in Computer Science (Data Science focus) and a background in Discrete Mathematics and CS.
-            I enjoy building data-driven systems end-to-end — from collecting raw information via APIs, transforming it through pipelines, and storing it in relational databases for analysis or visualization.
-        </p>
-    </section>
-
-    <section id="projects">
-        <h2>Featured Projects</h2>
-        <div class="project">
-            <h3>PostgreSQL ETL Pipeline</h3>
-            <p>Built a robust ETL pipeline that integrates fulfillment, order, and customer data from multiple platforms. Enabled efficient monitoring and analytics for an eCommerce operation.</p>
+<body class="antialiased">
+    <nav class="bg-white shadow-lg p-4 fixed w-full z-10 top-0">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-indigo-700 rounded-md p-2 hover:bg-indigo-50">Will Charles</a>
+            <div class="space-x-4">
+                <a href="#about" class="text-gray-700 hover:text-indigo-700 transition duration-300 rounded-md p-2 hover:bg-gray-100">About</a>
+                <a href="#portfolio" class="text-gray-700 hover:text-indigo-700 transition duration-300 rounded-md p-2 hover:bg-gray-100">Portfolio</a>
+                <a href="#contact" class="text-gray-700 hover:text-indigo-700 transition duration-300 rounded-md p-2 hover:bg-gray-100">Contact</a>
+            </div>
         </div>
-        <div class="project">
-            <h3>RAG for Long-Form Audio</h3>
-            <p>Developed a Retrieval-Augmented Generation application that summarizes and queries podcast and YouTube content using OpenAI and Whisper.</p>
-        </div>
-        <div class="project">
-            <h3>Twitter Sentiment Analysis</h3>
-            <p>Created a real-time pipeline using transformer models to analyze and visualize sentiment trends from Twitter data.</p>
+    </nav>
+
+    <section id="hero" class="relative bg-gradient-to-r from-indigo-600 to-purple-700 text-white flex items-center justify-center min-h-[60vh] pt-16">
+        <div class="text-center p-8 max-w-3xl mx-auto">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight">Hello, I'm <span class="text-yellow-300">Will Charles</span></h1>
+            <p class="text-xl md:text-2xl mb-8">Data Scientist & ML Enthusiast</p>
+            <a href="#portfolio" class="bg-white text-indigo-700 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition duration-300">View My Work</a>
         </div>
     </section>
 
-    <section id="contact">
-        <h2>Contact</h2>
-        <p>Find me on GitHub: <a href="https://github.com/willsee3927" target="_blank">willsee3927</a></p>
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <h2 class="text-4xl font-bold text-center mb-12 text-indigo-700">About Me</h2>
+            <div class="flex flex-col md:flex-row items-center md:space-x-10">
+                <div class="md:w-1/3 mb-8 md:mb-0">
+                    <img src="https://placehold.co/300x300/e0e7ff/4338ca?text=Will+Charles" alt="Will Charles" class="rounded-full shadow-lg mx-auto w-48 h-48 md:w-full md:h-auto object-cover">
+                </div>
+                <div class="md:w-2/3 text-lg leading-relaxed text-gray-700">
+                    <p class="mb-4">I'm a recent graduate with a Master's in Computer Science (Data Science) and a background in Discrete Mathematics and Computer Science. My passion lies in discovering insights through data, from initial collection via APIs to transforming and structuring it for analysis and visualization.</p>
+                    <p class="mb-4">As a co-founder of an eCommerce company, I’ve used my technical background to create data systems that support better decision-making and operational efficiency. I'm constantly seeking to uncover meaningful patterns and truths in complex datasets, guided by a belief that rigorous analysis can shape smarter strategies.</p>
+                    <p>If you're looking for someone who brings curiosity, clarity, and a full-stack data approach, I'm excited to connect.</p>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <footer>
-        <p>© 2025 Will Charles</p>
+    <section id="portfolio" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <h2 class="text-4xl font-bold text-center mb-12 text-indigo-700">My Portfolio</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="portfolio-item bg-white rounded-lg shadow-md overflow-hidden">
+                    <a href="https://wc40.github.io/cs416-narrative-viz/" target="_blank" class="block portfolio-item bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <img src="https://willsee3927.github.io/willsee3927/assets/images/project1-preview.png" alt="Energy GDP Narrative" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-2 text-gray-800">Energy GDP Narrative</h3>
+                        <p class="text-gray-600 mb-4">A brief Narrative Vizualisation to examine and explain the relationship between a country's energy usage and income per capita.</p>
+                    </div>
+                    </a>
+                </div>
+                <div class="portfolio-item bg-white rounded-lg shadow-md overflow-hidden">
+                    <img src="https://willsee3927.github.io/willsee3927/assets/images/project2-preview.png" alt="RAG for Long-Form Audio" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-2 text-gray-800">House Price Prediction</h3>
+                        <p class="text-gray-600 mb-4">Using Ames housing data, I used XGBoost and ElasticNet to clean, analyze, and then predict a home's sale price based on other features.</p>
+                    </div>
+                </div>
+                <div class="portfolio-item bg-white rounded-lg shadow-md overflow-hidden">
+                    <a href="https://public.tableau.com/app/profile/will.charles/viz/OWIDEnergyDashboard/Dashboard" target="_blank" class="block portfolio-item bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <img src="https://willsee3927.github.io/willsee3927/assets/images/project3-preview.png" alt="Global Economics Dashboard" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-2 text-gray-800">Global Economics Dashboard</h3>
+                        <p class="text-gray-600 mb-4">An interactive Tableau dashboard visualizing global trends in energy consumption and economic development. It explores correlations between GDP per capita and energy use, highlighting sub-regional differences with scatterplots, time series, and geospatial maps. Built using public OWID data to support energy and policy analysis.</p>
+                    </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 bg-white">
+        <div class="container mx-auto px-6 max-w-xl">
+            <h2 class="text-4xl font-bold text-center mb-12 text-indigo-700">Contact Me</h2>
+            <p class="text-lg text-center mb-8 text-gray-700">I'm always open to new opportunities and collaborations. Feel free to reach out via the links below!</p>
+            <div class="flex justify-center space-x-10 text-3xl text-indigo-600">
+                <a href="mailto:your.email@example.com" class="hover:text-indigo-800" aria-label="Email">
+                    <svg class="w-8 h-8 inline-block" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M2 4a2 2 0 012-2h16a2 2 0 012 2v16a2 2 0 01-2 2H4a2 2 0 01-2-2V4zm2 0v.01L12 13 20 4.01V4H4zm0 2.243v13.514L12 11.5l8 8.257V6.243l-8 8.257-8-8.257z"/>
+                    </svg>
+                </a>
+                <a href="https://linkedin.com/in/williamjcharles" target="_blank" class="hover:text-indigo-800" aria-label="LinkedIn">
+                    <svg class="w-8 h-8 inline-block" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 110-4 2 2 0 010 4z"></path>
+                    </svg>
+                </a>
+                <a href="https://github.com/willsee3927" target="_blank" class="hover:text-indigo-800" aria-label="GitHub">
+                    <svg class="w-8 h-8 inline-block" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.47.087.683-.233.683-.526 0-.258-.009-1.04-.015-2.042-2.78-.602-3.376-1.34-3.376-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.618.069-.606.069-.606 1.003.07 1.531 1.032 1.531 1.032.892 1.529 2.341 1.088 2.91.831.091-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.953 0-1.091.39-1.984 1.029-2.682-.103-.253-.446-1.272.098-2.65 0 0 .84-.269 2.75 1.025A9.458 9.458 0 0112 6.844c.85.004 1.701.114 2.516.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.379.202 2.398.099 2.65.64.698 1.028 1.591 1.028 2.682 0 3.848-2.339 4.69-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .295.213.618.682.525C21.133 20.2 24 16.447 24 12.017 24 6.484 19.522 2 14 2h-2z"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto text-center px-6">
+            <p>&copy; 2025 Will Charles</p>
+            <p class="mt-2 text-gray-400">Built with HTML, CSS (Tailwind CSS), and JavaScript.</p>
+        </div>
     </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
