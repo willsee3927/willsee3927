@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>House Price Prediction – Will Charles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="loadComponents.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Oswald', sans-serif;
+      background-color: #f8fafc;
+      color: #334155;
+    }
+    .portfolio-item {
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+    .portfolio-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+  <div data-include="components/nav.html"></div>
+
+  <main class="pt-24 pb-16 px-6 max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold mb-4 text-indigo-700">House Price Prediction</h1>
+    <p class="text-lg mb-6">
+      This project explores the Ames housing dataset using regression models to predict home sale prices. I apply XGBoost and ElasticNet after carefully cleaning and preprocessing the dataset.
+    </p>
+
+    <h2 class="text-2xl font-semibold mt-8 mb-2">Project Overview</h2>
+    <p class="mb-4">
+      The dataset includes 80+ features per home. I handled missing values, transformed skewed variables, and engineered new features to improve model performance.
+    </p>
+
+    <h2 class="text-2xl font-semibold mt-8 mb-2">Key Techniques</h2>
+    <ul class="list-disc list-inside mb-4">
+      <li>Feature selection and categorical encoding</li>
+      <li>Log transformation on sale price and predictors</li>
+      <li>XGBoost for non-linear pattern modeling</li>
+      <li>ElasticNet for regularized linear regression</li>
+      <li>Cross-validation with RMSE evaluation</li>
+    </ul>
+
+    <h2 class="text-2xl font-semibold mt-8 mb-2">Code & Repository</h2>
+    <p>
+      You can explore the full code on <a href="https://github.com/willsee3927" class="text-indigo-600 hover:underline" target="_blank">GitHub</a>.
+    </p>
+
+    <div class="mt-12">
+      <a href="index.html#portfolio" class="text-indigo-700 hover:underline text-lg">&larr; Back to Portfolio</a>
+    </div>
+  </main>
+
+  <div data-include="components/contact.html"></div>
+  <div data-include="components/footer.html"></div>
+
+</body>
+</html>
