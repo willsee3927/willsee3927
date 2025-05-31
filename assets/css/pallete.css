@@ -1,8 +1,23 @@
 :root {
-  --color-bg: #f8fafc;
-  --color-text: #334155;
-  --color-primary: #4f46e5;
-  --color-accent: #a855f7;
+  --color-bg:  #f4f4f5;   
+  --color-text: #404040;
+  --color-primary:#4f46e5;
+  --color-accent: #7e22ce;
+  --color-secondary: #eef2ff;
+  --color-muted: #f5f5f4;
+  --color-heading: #f8fafc; 
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #404040;    
+    --color-text: #f5f5f5;  
+    --color-primary: #84cc16;
+    --color-accent: #15803d;
+    --color-secondary: #15803d;
+    --color-muted: #3f3f46;
+    --color-heading: #27272a; 
+  }
 }
 
 .bg-site { background-color: var(--color-bg); }
@@ -10,8 +25,26 @@
 
 .bg-primary { background-color: var(--color-primary); }
 .text-primary { color: var(--color-primary); }
+.hover\:text-primary:hover {color: var(--color-primary);}
 
 .bg-accent { background-color: var(--color-accent); }
 .text-accent { color: var(--color-accent); }
+.hover\:bg-accent:hover {background-color: var(--color-accent);}
 
 .border-primary { border-color: var(--color-primary); }
+
+.bg-secondary { background-color: var(--color-secondary); }
+.text-secondary { color: var(--color-secondary); }
+.hover\:text-secondary:hover {color: var(--color-secondary);}
+.hover\:bg-secondary:hover {background-color: var(--color-secondary);}
+
+.text-muted { color: var(--color-muted); }
+.bg-muted { background-color: var(--color-muted); }
+.hover\:bg-muted:hover {background-color: var(--color-muted);}
+
+.text-heading { color: var(--color-heading); }
+.bg-heading { background-color: var(--color-heading); }
+
+.bg-gradient-palette {
+  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+}

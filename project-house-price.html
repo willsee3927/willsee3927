@@ -26,13 +26,25 @@
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
   </style>
-</head>
-<body class="antialiased">
 
-  <div data-include="components/nav.html"></div>
+<link rel="stylesheet" href="assets/css/pallete.css">
+
+</head>
+<body class="antialiased bg-site text-site">
+
+  <nav class="bg-heading shadow-lg p-4 fixed w-full z-10 top-0">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold text-primary hover:bg-secondary transition duration-200 rounded-md p-2">Will Charles</a>
+      <div class="space-x-4">
+        <a href="index.html#about" class="transition duration-300 rounded-md p-2 text-site hover:bg-muted hover:text-primary">About</a>
+        <a href="index.html#portfolio" class="transition duration-300 rounded-md p-2 text-site hover:bg-muted hover:text-primary">Portfolio</a>
+        <a href="#contact" class="transition duration-300 rounded-md p-2 text-site hover:bg-muted hover:text-primary">Contact</a>
+      </div>
+    </div>
+  </nav>
 
   <main class="pt-24 pb-16 px-6 max-w-4xl mx-auto">
-    <h1 class="text-4xl font-bold mb-4 text-indigo-700">House Price Prediction</h1>
+    <h1 class="text-4xl font-bold mb-4 text-primary">House Price Prediction</h1>
     <p class="text-lg mb-6">
       This project explores the Ames housing dataset using regression models to predict home sale prices. I apply XGBoost and ElasticNet after carefully cleaning and preprocessing the dataset.
     </p>
@@ -57,12 +69,40 @@
     </p>
 
     <div class="mt-12">
-      <a href="index.html#portfolio" class="text-indigo-700 hover:underline text-lg">&larr; Back to Portfolio</a>
+      <a href="index.html#portfolio" class="text-primary hover:underline text-lg">&larr; Back to Portfolio</a>
     </div>
   </main>
 
-  <div data-include="components/contact.html"></div>
-  <div data-include="components/footer.html"></div>
+  <section id="contact" class="py-20 bg-site">
+  <div class="container mx-auto px-6 max-w-xl">
+    <h2 class="text-4xl font-bold text-center mb-12 text-primary">Contact Me</h2>
+    <p class="text-lg text-center mb-8 text-site">I'm always open to new opportunities and collaborations. Feel free to reach out via the links below!</p>
+    <div class="flex justify-center space-x-10 text-3xl text-primary">
+      <a href="mailto:wjcc91@gmail.com" class="hover:text-accent" aria-label="Email">
+        <svg class="w-8 h-8 inline-block" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M2 4a2 2 0 012-2h16a2 2 0 012 2v16a2 2 0 01-2 2H4a2 2 0 01-2-2V4zm2 0v.01L12 13 20 4.01V4H4zm0 2.243v13.514L12 11.5l8 8.257V6.243l-8 8.257-8-8.257z"/>
+        </svg>
+      </a>
+      <a href="https://linkedin.com/in/williamjcharles" target="_blank" class="hover:text-accent" aria-label="LinkedIn">
+        <svg class="w-8 h-8 inline-block" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 110-4 2 2 0 010 4z"></path>
+        </svg>
+      </a>
+      <a href="https://github.com/willsee3927" target="_blank" class="hover:text-accent" aria-label="GitHub">
+        <svg class="w-8 h-8 inline-block" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.47.087.683-.233.683-.526 0-.258-.009-1.04-.015-2.042-2.78-.602-3.376-1.34-3.376-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.618.069-.606.069-.606 1.003.07 1.531 1.032 1.531 1.032.892 1.529 2.341 1.088 2.91.831.091-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.953 0-1.091.39-1.984 1.029-2.682-.103-.253-.446-1.272.098-2.65 0 0 .84-.269 2.75 1.025A9.458 9.458 0 0112 6.844c.85.004 1.701.114 2.516.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.379.202 2.398.099 2.65.64.698 1.028 1.591 1.028 2.682 0 3.848-2.339 4.69-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .295.213.618.682.525C21.133 20.2 24 16.447 24 12.017 24 6.484 19.522 2 14 2h-2z"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+  </section>
+
+  <footer class="bg-primary text-white py-8">
+  <div class="container mx-auto text-center px-6">
+    <p>&copy; 2025 Will Charles</p>
+    <p class="mt-2 text-accent">Built with HTML, Tailwind CSS, and JavaScript.</p>
+  </div>
+  </footer>
 
 </body>
 </html>
