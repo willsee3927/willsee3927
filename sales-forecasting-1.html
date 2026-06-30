@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Retail Sales Forecasting – Will Charles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Will Charles – Portfolio of data science and machine learning projects. Explore predictive modeling, dashboarding, and narrative visualization.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Oswald', sans-serif;
+      background-color: #f8fafc;
+      color: #334155;
+    }
+    .portfolio-item {
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+    .portfolio-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+
+<link rel="stylesheet" href="assets/css/pallete.css">
+
+</head>
+<body class="antialiased bg-site text-site">
+
+  <nav class="bg-heading shadow-lg p-4 fixed w-full z-10 top-0">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold text-primary hover:bg-secondary transition duration-200 rounded-md p-2">Will Charles</a>
+      <div class="space-x-4">
+        <a href="index.html#about" class="transition duration-300 rounded-md p-2 text-site hover:bg-muted hover:text-primary">About</a>
+        <a href="index.html#portfolio" class="transition duration-300 rounded-md p-2 text-site hover:bg-muted hover:text-primary">Portfolio</a>
+        <a href="#contact" class="transition duration-300 rounded-md p-2 text-site hover:bg-muted hover:text-primary">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-24 pb-16 px-6 max-w-4xl mx-auto">
+  <h1 class="text-4xl font-bold mb-4 text-primary">Retail Sales Forecasting Across 45 Stores</h1>
+  <p class="text-lg mb-6">
+    Developed a modular forecasting system to predict weekly department-level sales across 45 stores. The pipeline incorporates time-based regression, dimensionality reduction, and post-processing adjustments to model retail behavior with seasonality and promotional effects.
+  </p>
+
+  <h2 class="text-xl font-semibold mt-8 mb-2">Project Goals</h2>
+  <p class="mb-4">
+    The objective was to forecast two months of weekly sales for every store-department combination using historical data. Reliable forecasts help optimize inventory and staffing, especially during holiday peaks.
+  </p>
+
+  <h2 class="text-xl font-semibold mt-8 mb-2">Dataset & Evaluation</h2>
+  <p class="mb-4">
+    This project is based on the 
+    <a href="https://www.kaggle.com/c/walmart-recruiting-store-sales-forecasting" class="text-primary hover:underline" target="_blank">
+      Walmart Store Sales Forecasting
+    </a> 
+    competition hosted on Kaggle. The dataset contains historical weekly sales data from 45 Walmart stores across various departments, spanning from February 2010 to October 2012. Each record includes the store ID, department number, date, weekly sales, and a binary flag indicating if the week includes a major holiday.
+  </p>
+
+<p class="mb-4">
+  Sales forecasts were evaluated using <strong>Weighted Mean Absolute Error (WMAE)</strong>, where four key holidays—Super Bowl, Labor Day, Thanksgiving, and Christmas—are weighted five times higher than regular weeks. This metric emphasizes the importance of holiday-aware predictions in real-world retail planning.
+</p>
+
+<div class="bg-muted p-4 rounded-xl shadow-md mb-4 text-sm text-site">
+  <p class="mb-1"><strong>Time-Based Cross-Validation:</strong></p>
+  <p>
+    To ensure realistic evaluation, we used <strong>10 time-based folds</strong>. Each fold trained on a growing window of historical data and forecasted the subsequent two months of weekly sales across all store-department pairs.
+    For example, Fold 1 trained on data from Feb 2010–Feb 2011 and predicted sales from Mar–Apr 2011, while Fold 10 predicted Sept–Oct 2012 using all prior data.
+  </p>
+</div>
+
+  <h2 class="text-xl font-semibold mt-8 mb-2">Data Exploration</h2>
+  <p class="mb-4">
+    We began by visualizing sales patterns across key departments. The chart below highlights the diversity in department behavior.  Some exhibit smooth seasonality, others spike sharply around holidays, and a few show erratic trends. These early insights motivated the need for both department-specific modeling and calendar-aware features.
+  </p>
+  <div class="mb-8">
+    <img src="assets/images/weekly_sales_by_dept_fold10.png" alt="Department Weekly Sales" class="rounded-lg shadow-md">
+    <p class="text-sm mt-2 text-center text-muted">Figure: Weekly Sales Over Time for Departments 7, 8, 16, 65, and 95</p>
+  </div>
+
+  <h2 class="text-xl font-semibold mt-8 mb-2">Model Evolution</h2>
+  <p class="mb-4">
+    We fit separate linear models for each <strong>store-department combination</strong>, recognizing that different departments behave differently across stores.  
+    This granularity helped us avoid overfitting to general trends and capture local effects like store-specific promotions or regional seasonality.
+    This approach allowed us to capture localized trends while keeping the modeling interpretable and scalable. 
+  </p>
+  <ul class="list-disc list-inside mb-4 text-site">
+    <li>We began with a time-based regression: <code>Weekly_Sales ~ Yr + Wk</code>, which achieved a WMAE of <strong>1658</strong>, showing promise.</li>
+    <li>Adding a quadratic trend term <code>Yr²</code> helped model nonlinear effects and lowered WMAE to <strong>1626</strong>.</li> 
+    <li>To generalize better, we collapsed future test years (like 2012) into the most recent training year, improving performance to <strong>1618</strong>. Removed after SVD was. applied</li>
+    <li>Applied SVD to denoise sales signals across stores → <strong>WMAE 1588</strong></li>
+    <li>Smoothed predictions during holiday weeks (rolling blend) → <strong>WMAE 1559</strong></li>
+  </ul>
+
+  <h2 class="text-xl font-semibold mt-8 mb-2">Feature Engineering & Noise Reduction</h2>
+  <p class="mb-4">
+    To handle sparse department-store combinations and denoise irregular signals, we applied Singular Value Decomposition (SVD) across each department’s Store × Date sales matrix. 
+    <strong>SVD was used to compress noisy department-level sales patterns by projecting them onto a low-dimensional space.</strong> 
+    This allowed us to retain dominant trends while filtering out idiosyncratic fluctuations that might mislead the regression model.
+    Keeping only the top 8 singular components suppressed overfitting while capturing core seasonal and structural signals.
+  </p>
+
+  <h2 class="text-xl font-semibold mt-8 mb-2">Holiday Handling</h2>
+  <p class="mb-4">
+    Holiday periods (weeks 49–52) often caused overconfident spikes. To account for these, we applied a post-prediction smoothing using a rolling average: <code>85% current + 15% previous week</code>. This adjustment softened volatility and better reflected realistic sales transitions.
+  </p>
+
+  <h2 class="text-xl font-semibold mt-8 mb-2">Store-Level Behavior Clustering</h2>
+  <p class="mb-4">
+    To understand structural differences across stores, we clustered them based on standardized weekly sales curves. The resulting clusters captured different operational rhythms. Some had sharp seasonal cycles, others were steadier or more volatile. This informed decisions about segmentation and modeling granularity.
+  </p>
+  <div class="mb-8">
+    <img src="assets/images/sales_store_clusters.png" alt="Clustered Store Sales Patterns" class="rounded-lg shadow-md">
+    <p class="text-sm mt-2 text-center text-muted">Figure: Standardized Weekly Sales by Store Cluster (Agglomerative, k=4)</p>
+  </div>
+
+  <h2 class="text-xl font-semibold mt-8 mb-2">Department-Level Behavior Clustering</h2>
+  <p class="mb-4">
+    We repeated clustering on departments and uncovered similarly distinct groupings. Some departments followed retail norms with a holiday peak; others maintained flat or noisy patterns. This supported our decision to denoise department-level data and avoid applying a one-size-fits-all forecasting method.
+  </p>
+  <div class="mb-8">
+    <img src="assets/images/sales_dept_clusters.png" alt="Clustered Dept Sales Patterns" class="rounded-lg shadow-md">
+    <p class="text-sm mt-2 text-center text-muted">Figure: Standardized Weekly Sales by Department Cluster (Agglomerative, k=4)</p>
+  </div>
+
+  <h2 class="text-xl font-semibold mt-8 mb-2">Evaluation</h2>
+  <ul class="list-disc list-inside mb-4">
+    <li>Used Weighted Mean Absolute Error (WMAE) with higher weights for Super Bowl, Labor Day, Thanksgiving, and Christmas weeks.</li>
+    <li>Evaluated across 10 sequential test folds spanning different time periods.</li>
+    <li>Final model achieved an average WMAE of <strong>1559.5</strong>, outperforming the benchmark of 1580.</li>
+    <li>Executed on Apple M1 Pro (16GB RAM).</li>
+  </ul>
+
+  <div class="bg-muted text-site p-2 rounded-xl shadow-md mb-4 max-w-md mx-auto text-center">
+    <p class="font-semibold">Average WMAE:</p>
+    <p class="text-2xl text-primary mt-1"><strong>1559.5</strong></p>
+    <p class="text-sm text-muted">Lower is better. Benchmark: 1580</p>
+  </div>
+
+  <p class="mb-6">
+    This project demonstrates how thoughtful feature design, domain-aware adjustments, and noise reduction can enable traditional models to perform competitively in real-world forecasting scenarios.
+  </p>
+
+  <div class="mt-12">
+    <a href="index.html#portfolio" class="text-primary hover:underline text-lg">&larr; Back to Portfolio</a>
+  </div>
+</main>
+
+  <h2 class="text-xl font-semibold mt-8 mb-2">Code & Repository</h2>
+  <p>
+    You can explore the full code on <a href="https://github.com/willsee3927/old_projects/retail_sales_forecasting" class="text-indigo-600 hover:underline" target="_blank">GitHub</a>.
+  </p>
+
+
+
+  <section id="contact" class="py-20 bg-site">
+  <div class="container mx-auto px-6 max-w-xl">
+    <h2 class="text-4xl font-bold text-center mb-12 text-primary">Contact Me</h2>
+    <p class="text-lg text-center mb-8 text-site">I'm always open to new opportunities and collaborations. Feel free to reach out via the links below!</p>
+    <div class="flex justify-center space-x-10 text-3xl text-primary">
+      <a href="mailto:wjcc91@gmail.com" class="hover:text-accent" aria-label="Email">
+        <svg class="w-8 h-8 inline-block" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M2 4a2 2 0 012-2h16a2 2 0 012 2v16a2 2 0 01-2 2H4a2 2 0 01-2-2V4zm2 0v.01L12 13 20 4.01V4H4zm0 2.243v13.514L12 11.5l8 8.257V6.243l-8 8.257-8-8.257z"/>
+        </svg>
+      </a>
+      <a href="https://linkedin.com/in/williamjcharles" target="_blank" class="hover:text-accent" aria-label="LinkedIn">
+        <svg class="w-8 h-8 inline-block" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 110-4 2 2 0 010 4z"></path>
+        </svg>
+      </a>
+      <a href="https://github.com/willsee3927" target="_blank" class="hover:text-accent" aria-label="GitHub">
+        <svg class="w-8 h-8 inline-block" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.47.087.683-.233.683-.526 0-.258-.009-1.04-.015-2.042-2.78-.602-3.376-1.34-3.376-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.618.069-.606.069-.606 1.003.07 1.531 1.032 1.531 1.032.892 1.529 2.341 1.088 2.91.831.091-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.953 0-1.091.39-1.984 1.029-2.682-.103-.253-.446-1.272.098-2.65 0 0 .84-.269 2.75 1.025A9.458 9.458 0 0112 6.844c.85.004 1.701.114 2.516.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.379.202 2.398.099 2.65.64.698 1.028 1.591 1.028 2.682 0 3.848-2.339 4.69-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .295.213.618.682.525C21.133 20.2 24 16.447 24 12.017 24 6.484 19.522 2 14 2h-2z"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+  </section>
+
+  <footer class="bg-primary text-white py-8">
+  <div class="container mx-auto text-center px-6">
+    <p>&copy; 2025 Will Charles</p>
+    <p class="mt-2 text-accent">Built with HTML, Tailwind CSS, and JavaScript.</p>
+  </div>
+  </footer>
+
+</body>
+</html>

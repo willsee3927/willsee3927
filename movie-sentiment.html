@@ -1,0 +1,270 @@
+Of course. Here is the same HTML code with all the \`\` annotations removed.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interpretable Movie Sentiment Analysis – Will Charles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A machine learning project by Will Charles that classifies movie review sentiment with high accuracy and provides transparent, sentence-level interpretations for its predictions using BERT.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Oswald', sans-serif; background-color: #f8fafc; color: #334155; }
+    .highlight-pos { background-color: #fef9c3; color: #713f12; padding: 2px 4px; border-radius: 4px; }
+    .highlight-neg { background-color: #cffafe; color: #164e63; padding: 2px 4px; border-radius: 4px; }
+  </style>
+  <link rel="stylesheet" href="assets/css/pallete.css">
+</head>
+<body class="antialiased bg-site text-site">
+
+  <nav class="bg-heading shadow-lg p-4 fixed w-full z-10 top-0">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold text-primary hover:bg-secondary transition duration-200 rounded-md p-2">Will Charles</a>
+      <div class="space-x-4">
+        <a href="index.html#about" class="transition duration-300 rounded-md p-2 text-site hover:bg-muted hover:text-primary">About</a>
+        <a href="index.html#portfolio" class="transition duration-300 rounded-md p-2 text-site hover:bg-muted hover:text-primary">Portfolio</a>
+        <a href="#contact" class="transition duration-300 rounded-md p-2 text-site hover:bg-muted hover:text-primary">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-24 pb-16 px-6 max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold mb-4 text-primary">Interpretable Movie Review Sentiment Analysis</h1>
+    <p class="text-lg mb-6">
+      This project involved developing a model that not only predicts movie review sentiment with high accuracy but also explains the 'why' behind its decisions. I built a binary classification pipeline and an accompanying interpretability system using BERT to highlight the specific sentences that influence a prediction.
+    </p>
+
+    <h2 class="text-xl font-semibold mt-12 mb-2">Dataset & Evaluation Metric</h2>
+    <p class="mb-4">
+      The dataset consists of 50,000 IMDB movie reviews. Each review includes its text, a sentiment label (0 for negative, 1 for positive), and a 1,536-dimensional embedding from OpenAI's `text-embedding-3-large` model used for the classification task. The project provided five different training/test splits to ensure model robustness.
+    </p>
+    <p class="mb-4">
+      The primary success metric was the **Area Under the Curve (AUC)**, with a target of achieving a score of at least <strong>0.986</strong> across all five test splits.
+    </p>
+
+    <h2 class="text-xl font-semibold mt-12 mb-2">The Two-Part Solution: Prediction and Interpretation</h2>
+    <p class="mb-6">
+      My approach was split into two main phases. First, I focused on building a highly accurate classification model. Second, I engineered a system to make that model's predictions transparent and understandable.
+    </p>
+
+    <div class="bg-muted p-6 rounded-xl shadow-md mb-8">
+        <h3 class="text-2xl font-bold text-primary mb-2">Part 1: High-Accuracy Sentiment Prediction</h3>
+        <p class="mb-4">
+            The classification model is a **Logistic Regression** classifier with an elasticnet penalty, which is well-suited for high-dimensional data. Before training, all features were standardized using `StandardScaler`. This model was trained and evaluated on each of the five data splits, consistently exceeding the target AUC score.
+        </p>
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-center bg-site rounded-lg">
+                <thead class="bg-secondary">
+                    <tr>
+                        <th class="p-3">Data Split</th>
+                        <th class="p-3">AUC Score</th>
+                        <th class="p-3">Execution Time (s)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="p-2">Split 1</td><td class="p-2">0.98693</td><td class="p-2">39.07</td></tr>
+                    <tr><td class="p-2 bg-muted">Split 2</td><td class="p-2 bg-muted">0.98661</td><td class="p-2 bg-muted">45.29</td></tr>
+                    <tr><td class="p-2">Split 3</td><td class="p-2">0.98633</td><td class="p-2">39.56</td></tr>
+                    <tr><td class="p-2 bg-muted">Split 4</td><td class="p-2 bg-muted">0.98694</td><td class="p-2 bg-muted">41.64</td></tr>
+                    <tr><td class="p-2">Split 5</td><td class="p-2">0.98622</td><td class="p-2">45.93</td></tr>
+                </tbody>
+            </table>
+            <p class="text-xs text-center mt-2 text-muted">Performance measured on a Macbook Pro (16GB RAM, M1 Pro).</p>
+        </div>
+    </div>
+
+    <div class="bg-muted p-6 rounded-xl shadow-md mb-8">
+        <h3 class="text-2xl font-bold text-primary mb-2">Part 2: Engineering for Interpretability with BERT</h3>
+        <p class="mb-4">
+            A high accuracy score is great, but understanding *why* a model makes a decision is crucial for trust and debugging. To achieve this, I built an interpretation system that pinpoints influential sentences within a review.
+        </p>
+        <ul class="list-disc list-inside mb-4 text-site space-y-2">
+            <li>The system takes a review and splits it into individual sentences.</li>
+            <li>A pre-trained **BERT model** generates an embedding for each sentence.</li>
+            <li>Each sentence embedding is passed to the trained classifier to get a sentiment probability.</li>
+            <li>Sentences with probabilities above a positive threshold (0.46) or below a negative threshold (0.42) are highlighted as key drivers of the overall prediction.</li>
+        </ul>
+        <p>This method provides a clear, visual explanation for the model's output, as shown in the interactive demo below.</p>
+    </div>
+
+    <h2 class="text-xl font-semibold mt-12 mb-2">Interpretability in Action</h2>
+    <p class="mb-4">
+        Below are 5 positive and 5 negative reviews from the test set. Click the tabs to see the sentences my model highlighted as being most important for its decision.
+    </p>
+    <div class="w-full">
+        <div class="mb-4 border-b border-gray-200">
+            <ul class="flex flex-wrap -mb-px" id="myTab" role="tablist">
+                <li class="mr-2" role="presentation">
+                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="positive-tab" type="button" role="tab" aria-controls="positive" aria-selected="true">Positive Reviews</button>
+                </li>
+                <li class="mr-2" role="presentation">
+                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="negative-tab" type="button" role="tab" aria-controls="negative" aria-selected="false">Negative Reviews</button>
+                </li>
+            </ul>
+        </div>
+        <div id="tabContent">
+            <div class="p-4 rounded-lg bg-muted" id="positive" role="tabpanel" aria-labelledby="positive-tab">
+              <p class="text-sm">Loading positive reviews...</p>
+            </div>
+            <div class="hidden p-4 rounded-lg bg-muted" id="negative" role="tabpanel" aria-labelledby="negative-tab">
+              <p class="text-sm">Loading negative reviews...</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="text-xl font-semibold mt-12 mb-2">Final Results and Conclusion</h2>
+    <p class="mb-4">
+      The final model successfully met both project objectives, achieving a robust average AUC score above the 0.986 target while providing clear, sentence-level explanations for its predictions. This project highlights a complete workflow from building an accurate predictive model to ensuring its outputs are transparent and trustworthy. The interpretation method proved effective at identifying phrases that contribute to a prediction, though its reliance on BERT's complex attention mechanism means some highlighted phrases may not always seem intuitive.
+    </p>
+
+    <div class="my-8">
+      <h3 class="text-xl font-semibold mb-2">Interactive Positive Review Analysis</h3>
+      <iframe src="assets/interactive/shap_positive_review.html" 
+              frameborder="0" 
+              scrolling="no" 
+              class="w-full h-96 rounded-lg shadow-md">
+      </iframe>
+      <p class="text-sm mt-2 text-center">
+        An interactive explanation of the model's reasoning. Hover over words to see their impact.
+      </p>
+    </div>
+
+    <div class="bg-muted text-site p-6 rounded-xl shadow-md text-center max-w-md mx-auto">
+        <p class="font-semibold text-lg">Final Average AUC Score:</p>
+        <p class="text-5xl text-primary mt-2"><strong>~0.986</strong></p>
+        <p class="text-md text-muted">Target Score: 0.986</p>
+    </div>
+
+    <div class="mt-8">
+        <h3 class="text-lg font-semibold mb-2">Technologies Used</h3>
+        <div class="flex flex-wrap gap-2">
+            <span class="bg-secondary text-primary text-sm font-semibold px-2.5 py-0.5 rounded">Python</span>
+            <span class="bg-secondary text-primary text-sm font-semibold px-2.5 py-0.5 rounded">Pandas</span>
+            <span class="bg-secondary text-primary text-sm font-semibold px-2.5 py-0.5 rounded">Scikit-learn</span>
+            <span class="bg-secondary text-primary text-sm font-semibold px-2.5 py-0.5 rounded">NumPy</span>
+            <span class="bg-secondary text-primary text-sm font-semibold px-2.5 py-0.5 rounded">Transformers (BERT)</span>
+        </div>
+    </div>
+
+    <div class="mt-12">
+      <a href="index.html#portfolio" class="text-primary hover:underline text-lg">&larr; Back to Portfolio</a>
+    </div>
+  </main>
+
+  <section id="code" class="py-12 bg-muted">
+    <div class="container mx-auto px-6 max-w-4xl text-center">
+      <h2 class="text-2xl font-bold mb-4 text-primary">Code & Report</h2>
+      <p class="mb-6">The complete source code and the original project report are available for review.</p>
+      <div class="flex justify-center gap-4">
+        <a href="https://github.com/EnzeCa1/STAT542/blob/main/automatically_auc.py" class="bg-primary text-white font-bold py-3 px-6 rounded-lg hover:bg-accent transition duration-300" target="_blank" rel="noopener noreferrer">View Code on GitHub</a>
+        <a href="project3_report.pdf" class="bg-secondary text-primary font-bold py-3 px-6 rounded-lg hover:bg-accent transition duration-300" target="_blank">View Full Report</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="py-20 bg-site">
+    <div class="container mx-auto px-6 max-w-xl">
+      <h2 class="text-4xl font-bold text-center mb-12 text-primary">Contact Me</h2>
+      <p class="text-lg text-center mb-8 text-site">I'm always open to new opportunities and collaborations. Feel free to reach out via the links below!</p>
+      <div class="flex justify-center space-x-10 text-3xl text-primary">
+        <a href="mailto:wjcc91@gmail.com" class="hover:text-accent" aria-label="Email">
+          <svg class="w-8 h-8 inline-block" fill="currentColor" viewBox="0 0 24 24"><path d="M2 4a2 2 0 012-2h16a2 2 0 012 2v16a2 2 0 01-2 2H4a2 2 0 01-2-2V4zm2 0v.01L12 13 20 4.01V4H4zm0 2.243v13.514L12 11.5l8 8.257V6.243l-8 8.257-8-8.257z"/></svg>
+        </a>
+        <a href="https://linkedin.com/in/williamjcharles" target="_blank" class="hover:text-accent" aria-label="LinkedIn" rel="noopener noreferrer">
+          <svg class="w-8 h-8 inline-block" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 110-4 2 2 0 010 4z"/></svg>
+        </a>
+        <a href="https://github.com/willsee3927" target="_blank" class="hover:text-accent" aria-label="GitHub" rel="noopener noreferrer">
+          <svg class="w-8 h-8 inline-block" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.47.087.683-.233.683-.526 0-.258-.009-1.04-.015-2.042-2.78-.602-3.376-1.34-3.376-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.618.069-.606.069-.606 1.003.07 1.531 1.032 1.531 1.032.892 1.529 2.341 1.088 2.91.831.091-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.953 0-1.091.39-1.984 1.029-2.682-.103-.253-.446-1.272.098-2.65 0 0 .84-.269 2.75 1.025A9.458 9.458 0 0112 6.844c.85.004 1.701.114 2.516.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.379.202 2.398.099 2.65.64.698 1.028 1.591 1.028 2.682 0 3.848-2.339 4.69-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .295.213.618.682.525C21.133 20.2 24 16.447 24 12.017 24 6.484 19.522 2 14 2h-2z"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-primary text-white py-8">
+  <div class="container mx-auto text-center px-6">
+    <p>&copy; 2025 Will Charles</p>
+    <p class="mt-2 text-accent">Built with HTML, Tailwind CSS, and a dash of JavaScript</p>
+  </div>
+  </footer>
+
+  <script>
+    // Data from the project report
+    const positiveReviews = [
+      `Sacha Baron Cohen is a genius. <span class="highlight-pos">[POSITIVE 0.4871] And this movie is good!</span> Although the film doesn't nearly reach the quality of the tv-show, it's still very funny and has some seriously wicked moments! I've liked Ali G since the first time I saw the material from the show. <span class="highlight-pos">[POSITIVE 0.4926] I think he's one of the best comedy characters of all time..</span> <span class="highlight-pos">[POSITIVE 0.5159] up there with say, Peter Dragon (\\Action\\") and The Blues Brothers.</span> <span class="highlight-pos">[POSITIVE 0.4966] Biggest surprise with this film was that they've actually got some serious actors to do it (Dance and Gambon).</span> After this I will absolutely respect them even more, for having the good sense to take this chance. I have nothing really bad to say about this film, it's very funny. <span class="highlight-pos">[POSITIVE 0.4668] Very juvenile, but hey, so what?!</span> One more thing to mr. <span class="highlight-pos">[POSITIVE 0.4814] G: SEQUEL, PLEASE!</span>`,
+      `Definitely one of my favourite movies. <span class="highlight-pos">[POSITIVE 0.4757] The story is good, acting is great, all technicals (especially cinematography) are sharp and the script is clever.</span> Heath Ledger is terrific as Edward "Ned" Kelly. He is gripping as the legendary outlaw, and is supported well by Geoffrey Rush, Naomi Watts and Orlando Bloom. <span class="highlight-pos">[POSITIVE 0.4866] All action sequences are on point.</span> The film is edge-of-your seat stuff right up to to the end. <span class="highlight-pos">[POSITIVE 0.4768] One of my favourite films from the late legend Heath Ledger, who has been the highlight of every film he has starred in.</span> <span class="highlight-pos">[POSITIVE 0.4689] And makes no mistake here.</span> An excellent film all round..`,
+      `I just finished watching the 139 min version (widescreen) with some friends and we were blown away. I won't bother repeating what others have said. What the filmmakers do with the concept is unexpected and fun. <span class="highlight-pos">[POSITIVE 0.4685] The huge battle is exhausting.</span> Afterwards we were stunned to find there was still nearly 30 minutes left to go but that didn't keep us from being completely involved and entertained. There is one thing that nearly ruined it and that was the horrific music/songs. Blues, Country/Folk and Rock Ballads do not belong here and every time they are used we all broke out in laughter. It's hideous. <span class="highlight-pos">[POSITIVE 0.4790] You have been warned but the story and storytelling keeps you grounded.</span> There are several outstanding moments that make you appreciate the talent behind the camera. There are many uses of silence as well as slow-motion photography that work beautifully. I really wish I could erase the music but alas. Seek this out. <span class="highlight-pos">[POSITIVE 0.4729] It's fun, it's different and it takes you to places you wouldn't expect and that's very refreshing..</span>`
+    ];
+
+    const negativeReviews = [
+      `As we are well aware, movies are not set out to be a direct incorporation of history, but it is a disgrace when a movie is made which has absolutely little to no correlation. <span class="highlight-neg">[NEGATIVE 0.3905] I wish the director and/or the screen writer had done his/her research in this topic.</span> <span class="highlight-neg">[NEGATIVE 0.4072] All this movie does is create a forum for hate between people, while causing a rift that should not be there.</span> <span class="highlight-neg">[NEGATIVE 0.3837] This movie portrayed the Sikhs and Muslims in a very negative manor, while making the third group (Hindus) look as if they were non existent in the brutal killings of the people of both nations.</span> The inaccuracies, coupled with the sear disregard for one's faith as portrayed by 'Gian Singh' was a disgrace to the highest format. <span class="highlight-neg">[NEGATIVE 0.3948] Though on a more positive note, the actors did a great job in acting in their roles.</span> Both Kristen K and Neve C played their rolls exceptionally. I hope those that watch this movie do not see or use it as a template for the actual historical event..`,
+      `<span class="highlight-neg">[NEGATIVE 0.4094] Well I just paid a dollar for a DVD of this movie, and it wasn't even worth that.</span> It seems to be from a poor print and is in the public domain, I am guessing. Neagle despite her glory, awards, and reputation is a homely British gal who can't sing or dance or act. Some of the fine old Hollywood character actors on display here must have thought they were doing a classic. <span class="highlight-neg">[NEGATIVE 0.4020] Director Herbert Wilcox (Neagle's husband) always thought Anna was the most exciting and talented femme on the screen.</span> He was mistaken. <span class="highlight-neg">[NEGATIVE 0.3926] She was improbably popular in Britain before and after WWII.</span> <span class="highlight-neg">[NEGATIVE 0.3865] Her \\"serious\\" roles are even more ludicrous than her musical appearance here.</span> Only a couple of the famous songs are included and neither one is well presented. Skip this one and find the one that stars Doris Day. At least you get some real comedy and professional style dancing!`,
+      `I read all the reviews here AFTER watching this piece of cinematic garbage and it took me at least 2 pages to find out that somebody else didn't think that this appallingly unfunny montage WASN'T the acme of humour in the 70s or indeed in any other era! If this isn't the least funny set of sketch *comedy* I've ever seen it'll do till it comes along. <span class="highlight-neg">[NEGATIVE 0.3645] Half of the skits had already been done (and infinitely better) by acts such as Monty Python and Woody Allen...</span> <span class="highlight-neg">[NEGATIVE 0.3940] If I was to say that a nice piece of animation that lasts about 90 seconds is the highlight of this film it would still not get close to summing up just how mindless and drivel-ridden this waste of 75 minutes is.</span> <span class="highlight-neg">[NEGATIVE 0.4078] Seminal comedy? Only in the world where seminal really DOES mean semen.</span> <span class="highlight-neg">[NEGATIVE 0.3879] Scatological humour?</span> Only in a world where scat IS actually feces. Precursor jokes? Only if by that we mean that this is a handbook of how NOT to do comedy. <span class="highlight-neg">[NEGATIVE 0.4187] Tits and bums and the odd beaver. Nice...if you are a pubescent boy with at least one hand free and haven't found out that Playboy exists.</span> Give it a break because it was the early 70s? No way. There had been sketch comedy going back at least ten years prior. <span class="highlight-neg">[NEGATIVE 0.3848] The only way I could even forgive this film even being made is if it was at gunpoint.</span>`
+    ];
+
+    // Function to populate the tabs
+    function populateReviews() {
+        const positiveContainer = document.getElementById('positive');
+        const negativeContainer = document.getElementById('negative');
+
+        let positiveHTML = positiveReviews.map((review, index) => `
+            <div class="mb-6 border-b border-gray-400 pb-4">
+              <h4 class="font-bold text-lg mb-2 text-primary">Positive Review #${index + 1}</h4>
+              <p class="text-site leading-relaxed">${review}</p>
+            </div>
+        `).join('');
+        positiveContainer.innerHTML = positiveHTML;
+
+        let negativeHTML = negativeReviews.map((review, index) => `
+            <div class="mb-6 border-b border-gray-400 pb-4">
+              <h4 class="font-bold text-lg mb-2 text-primary">Negative Review #${index + 1}</h4>
+              <p class="text-site leading-relaxed">${review}</p>
+            </div>
+        `).join('');
+        negativeContainer.innerHTML = negativeHTML;
+    }
+    
+    // Tab switching logic
+    document.addEventListener('DOMContentLoaded', function () {
+        populateReviews();
+
+        const tabs = [
+            { id: 'positive', button: document.getElementById('positive-tab'), panel: document.getElementById('positive') },
+            { id: 'negative', button: document.getElementById('negative-tab'), panel: document.getElementById('negative') }
+        ];
+
+        const activeClasses = 'border-primary text-primary';
+        const inactiveClasses = 'border-transparent hover:text-gray-600 hover:border-gray-300';
+
+        function switchTab(selectedTab) {
+            tabs.forEach(tab => {
+                if (tab.id === selectedTab.id) {
+                    tab.button.classList.remove(...inactiveClasses.split(' '));
+                    tab.button.classList.add(...activeClasses.split(' '));
+                    tab.panel.classList.remove('hidden');
+                    tab.button.setAttribute('aria-selected', 'true');
+                } else {
+                    tab.button.classList.remove(...activeClasses.split(' '));
+                    tab.button.classList.add(...inactiveClasses.split(' '));
+                    tab.panel.classList.add('hidden');
+                    tab.button.setAttribute('aria-selected', 'false');
+                }
+            });
+        }
+        
+        // Set initial state
+        switchTab(tabs[0]);
+
+        tabs.forEach(tab => {
+            tab.button.addEventListener('click', () => switchTab(tab));
+        });
+    });
+  </script>
+
+</body>
+</html>
+```

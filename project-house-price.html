@@ -43,35 +43,96 @@
     </div>
   </nav>
 
-  <main class="pt-24 pb-16 px-6 max-w-4xl mx-auto">
-    <h1 class="text-4xl font-bold mb-4 text-primary">House Price Prediction</h1>
-    <p class="text-lg mb-6">
-      This project explores the Ames housing dataset using regression models to predict home sale prices. I apply XGBoost and ElasticNet after carefully cleaning and preprocessing the dataset.
-    </p>
+ <main class="pt-24 pb-16 px-6 max-w-4xl mx-auto">
+  <h1 class="text-4xl font-bold mb-4 text-primary">Predicting House Prices in Ames, Iowa</h1>
+  <p class="text-lg mb-6">
+    This project predicts home sale prices using linear (ElasticNet) and non-linear (XGBoost) regression models trained on over 80 features. It incorporates robust preprocessing, feature engineering, and model tuning to achieve strong predictive accuracy.
+  </p>
 
-    <h2 class="text-2xl font-semibold mt-8 mb-2">Project Overview</h2>
-    <p class="mb-4">
-      The dataset includes 80+ features per home. I handled missing values, transformed skewed variables, and engineered new features to improve model performance.
-    </p>
+  <h2 class="text-xl font-semibold mt-8 mb-2">Data Exploration</h2>
+  <p class="mb-4">
+    I began by exploring the relationship between predictors and the response (home sale prices) to guide feature transformations and model selection. To get a feel for the data, I examined scatter plots, counted null values, and examined distributions of categorical and numerical variables.  The interactive charts below highlight some of the more apparent patterns, such as the strong log-linear relationship between living area and sale price, and the ordinal impact of overall quality.
+  </p>
 
-    <h2 class="text-2xl font-semibold mt-8 mb-2">Key Techniques</h2>
-    <ul class="list-disc list-inside mb-4">
-      <li>Feature selection and categorical encoding</li>
-      <li>Log transformation on sale price and predictors</li>
-      <li>XGBoost for non-linear pattern modeling</li>
-      <li>ElasticNet for regularized linear regression</li>
-      <li>Cross-validation with RMSE evaluation</li>
-    </ul>
-
-    <h2 class="text-2xl font-semibold mt-8 mb-2">Code & Repository</h2>
-    <p>
-      You can explore the full code on <a href="https://github.com/willsee3927" class="text-indigo-600 hover:underline" target="_blank">GitHub</a>.
-    </p>
-
-    <div class="mt-12">
-      <a href="index.html#portfolio" class="text-primary hover:underline text-lg">&larr; Back to Portfolio</a>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div> 
+      <h3 class="text-lg font-bold mb-2">Correlation of Top 10 Features</h3>
+      <iframe src="assets/interactive/top_10_correlation_matrix.html" width="100%" height="400px" frameborder="0"></iframe>
     </div>
-  </main>
+    <div>
+      <h3 class="text-lg font-bold mb-2">Distribution of Log(Sale Price)</h3>
+      <iframe src="assets/interactive/histogram_log_sale_price.html" width="100%" height="400px" frameborder="0"></iframe>
+    </div>
+    <div>
+      <h3 class="text-lg font-bold mb-2">Log(Sale Price) by Overall Quality</h3>
+      <iframe src="assets/interactive/boxplot_quality_vs_log_price.html" width="100%" height="400px" frameborder="0"></iframe>
+    </div>
+    <div>
+      <h3 class="text-lg font-bold mb-2">Log(Sale Price) vs Living Area</h3>
+      <iframe src="assets/interactive/scatter_living_area_log_price.html" width="100%" height="400px" frameborder="0"></iframe>
+    </div>
+  </div> 
+
+  <h2 class="text-xl font-semibold mt-8 mb-2">Data Preprocessing</h2>
+  <ul class="list-disc list-inside mb-4">
+    <li>Removed 11 low-utility columns.  These were either redundant or mostly null values.</li>
+    <li>Filled missing values in <code>Garage_Yr_Blt</code> with 0 to preserve numeric format.</li>
+    <li>Winsorized 15+ numerical features at the 95th percentile to reduce outlier influence.</li>
+    <li>Identified categorical features and applied full one-hot encoding (K dummies per column, no level dropping).</li>
+    <li>Standardized numerical features using <code>RobustScaler</code> for stability against outliers.</li>
+    <li>Log-transformed <code>Sale_Price</code> to normalize its distribution and align with RMSE evaluation.</li>
+  </ul>
+
+  <h2 class="text-xl font-semibold mt-8 mb-2">Model Tuning</h2>
+  <ul class="list-disc list-inside mb-4">
+    <li>For ElasticNet, performed a grid search on <code>alpha</code> and <code>l1_ratio</code> based on initial exploration, then used <code>ElasticNetCV</code> for cross-validation.</li>
+    <li>Applied <code>RobustScaler</code> to inputs before fitting the linear model.</li>
+    <li>For XGBoost, used parameters inspired by community benchmarks: <code>n_estimators=5000</code>, <code>max_depth=6</code>, <code>eta=0.01</code>, and <code>subsample=0.5</code>.</li>
+    <li>XGBoost performed well without further tuning due to the robustness of tree-based methods to raw feature scale.</li>
+  </ul>
+
+  <h2 class="text-xl font-semibold mt-8 mb-2">Evaluation</h2>
+  <ul class="list-disc list-inside mb-4">
+    <li>Used Root Mean Squared Error (RMSE) on the natural log of sale price for all model evaluations.</li>
+    <li>Validated both models using 10 distinct train/test splits, reporting scores separately for each fold.</li>
+    <li>Both models were below 0.125 RMSE for the first 5 folds and below 0.135 for last 5.</li>
+    <li>XGBoost consistently outperformed ElasticNet, capturing non-linear relationships in the data.</li>
+  </ul>
+
+  <div class="bg-muted text-site p-2 rounded-xl shadow-md mb-4 max-w-md mx-auto text-center">
+    <p class="font-semibold">Mean RMSE Scores:</p>
+    <ul class="list-disc list-inside text-left inline-block">
+      <li>ElasticNet: <strong>0.121</strong></li>
+      <li>XGBoost: <strong>0.119</strong></li>
+    </ul>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <img src="assets/images/en_top_feat.png" alt="ElasticNet Top Features" class="rounded-xl shadow-md">
+      <p class="text-center mt-2 text-sm">Top ElasticNet Features</p>
+    </div>
+    <div>
+      <img src="assets/images/xgb_top_feat.png" alt="XGBoost Top Features" class="rounded-xl shadow-md">
+      <p class="text-center mt-2 text-sm">Top XGBoost Features</p>
+    </div>
+  </div>
+
+  <p class="mt-6 mb-4">
+    Above are the most influential features for each model, aggregated across all folds. The linear ElasticNet model strongly emphasizes features we identified early in our data exploration, particularly living area and overall quality. In contrast, XGBoost appears to deprioritize the <code>Overall_Qual</code> categories entirely. Interestingly, only three features appear in the top 20 for both models: <code>Year_Built</code>, <code>Gr_Liv_Area</code>, and <code>Total_Bsmt_SF</code>.  This aligns with our intuition that these features are key predictors of sale price, but also highlights the different ways linear and non-linear models can interpret feature importance.
+  </p>
+
+
+  <div class="mt-12">
+    <a href="index.html#portfolio" class="text-primary hover:underline text-lg">&larr; Back to Portfolio</a>
+  </div>
+</main>
+
+
+  <h2 class="text-xl font-semibold mt-8 mb-2">Code & Repository</h2>
+    <p>
+      You can explore the full code on <a href="https://github.com/willsee3927/old_projects/ames_housing" class="text-indigo-600 hover:underline" target="_blank">GitHub</a>.
+    </p>
 
   <section id="contact" class="py-20 bg-site">
   <div class="container mx-auto px-6 max-w-xl">
