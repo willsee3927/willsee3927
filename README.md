@@ -1,6 +1,6 @@
 # Will Charles — Portfolio
 
-This is the source for my personal portfolio site, live at **[willcharles.dev](https://willcharles.dev)**. It's where I document the data science and machine learning projects I've worked on, from initial data exploration all the way through to the final model.
+This is the source for my personal portfolio site, live at **[willsee3927.github.io](https://willsee3927.github.io/)**. It's where I document the data science and machine learning projects I've worked on, from initial data exploration all the way through to the final model.
 
 I'm a recent graduate with a Master's in Computer Science (Data Science) and a background in Discrete Mathematics. I like discovering insights through data — collecting it, cleaning it, structuring it, and figuring out the clearest way to tell the story it holds. This site is my attempt to show that process, not just the results.
 
