@@ -27,23 +27,6 @@
   </style>
 
   <link rel="stylesheet" href="assets/css/pallete.css">
-
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  <style>
-    #particles-js {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      top: 0;
-      left: 0;
-    }
-    #hero .content {
-      position: relative;
-      z-index: 1;
-    }
-  </style>
-  
 </head>
 <body class="antialiased bg-site text-site">
 
@@ -58,12 +41,11 @@
     </div>
   </nav>
 
-  <section id="hero" class="relative bg-gradient-palette text-white flex items-center justify-center min-h-[60vh] pt-16">
-    <div id="particles-js"></div> 
+  <section id="hero" class="relative flex items-center justify-center min-h-[60vh] pt-16">
     <div class="content text-center p-8 max-w-3xl mx-auto">
-      <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight">Hello, I'm <span class="text-yellow-300">Will Charles</span></h1>
-      <p class="text-xl md:text-2xl mb-8">Data Scientist & ML Enthusiast</p>
-      <a href="#portfolio" class="inline-block bg-site text-primary font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:-translate-y-1 hover:shadow-xl">View My Work</a>
+      <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight">Hello, I'm <span class="hero-name">Will Charles</span></h1>
+      <p class="hero-tagline text-lg md:text-xl mb-8 text-gray-300"><span class="cursor">&gt; Data Scientist &amp; ML Enthusiast</span></p>
+      <a href="#portfolio" class="hero-btn inline-block font-bold py-3 px-8 rounded-md">View My Work &rarr;</a>
     </div>
   </section>
 
@@ -90,11 +72,11 @@
       <h2 class="text-4xl font-bold text-center mb-12 text-primary">My Portfolio</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-        <a href="https://wc40.github.io/cs416-narrative-viz/" class="portfolio-item bg-heading rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 block">
-          <img src="assets/images/project1-preview.png" alt="Energy GDP Narrative" class="w-full h-48 object-cover">
+        <a href="sales-forecasting.html" class="portfolio-item bg-heading rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 block">
+          <img src="assets/images/project1-preview.png" alt="Retail Sales Forecasting" class="w-full h-48 object-cover">
           <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2 text-accent">Energy GDP Narrative</h3>
-            <p class="text-site mb-4">A brief Narrative Visualization to examine and explain the relationship between a country's energy usage and income per capita.</p>
+            <h3 class="text-2xl font-semibold mb-2 text-accent">Retail Sales Forecasting</h3>
+            <p class="text-site mb-4">A multi-stage pipeline using OLS regression and SVD denoising to forecast weekly sales across 45 stores, beating the benchmark WMAE.</p>
           </div>
         </a>
 
@@ -106,29 +88,29 @@
           </div>
         </a>
 
+        <a href="movie-sentiment.html" class="portfolio-item bg-heading rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 block">
+          <img src="assets/images/project3-preview.png" alt="Movie Sentiment Analysis" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2 text-accent">Movie Sentiment Analysis</h3>
+            <p class="text-site mb-4">An interpretable NLP model that predicts movie review sentiment and uses SHAP to explain which words drive each prediction.</p>
+          </div>
+        </a>
+
+        <a href="https://wc40.github.io/cs416-narrative-viz/" class="portfolio-item bg-heading rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 block">
+          <img src="assets/images/project4-preview.png" alt="Energy GDP Narrative" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2 text-accent">Energy GDP Narrative</h3>
+            <p class="text-site mb-4">A brief Narrative Visualization to examine and explain the relationship between a country's energy usage and income per capita.</p>
+          </div>
+        </a>
+
         <a href="https://public.tableau.com/app/profile/will.charles/viz/OWIDEnergyDashboard/Dashboard" target="_blank" class="portfolio-item bg-heading rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 block">
-          <img src="assets/images/project3-preview.png" alt="Global Economics Dashboard" class="w-full h-48 object-cover">
+          <img src="assets/images/project5-preview.png" alt="Global Economics Dashboard" class="w-full h-48 object-cover">
           <div class="p-6">
             <h3 class="text-2xl font-semibold mb-2 text-accent">Global Econ Dashboard</h3>
             <p class="text-site mb-4">
               An interactive Tableau dashboard visualizing global trends in energy consumption and economic development.
             </p>
-          </div>
-        </a>
-
-        <a href="sales-forecasting.html" class="portfolio-item bg-heading rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 block">
-          <img src="assets/images/project4-preview.png" alt="Retail Sales Forecasting" class="w-full h-48 object-cover">
-          <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2 text-accent">Retail Sales Forecasting</h3>
-            <p class="text-site mb-4">A multi-stage pipeline using OLS regression and SVD denoising to forecast weekly sales across 45 stores, beating the benchmark WMAE.</p>
-          </div>
-        </a>
-
-        <a href="movie-sentiment.html" class="portfolio-item bg-heading rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 block">
-          <img src="assets/images/project5-preview.png" alt="Movie Sentiment Analysis" class="w-full h-48 object-cover">
-          <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2 text-accent">Movie Sentiment Analysis</h3>
-            <p class="text-site mb-4">An interpretable NLP model that predicts movie review sentiment and uses SHAP to explain which words drive each prediction.</p>
           </div>
         </a>
 
@@ -166,32 +148,6 @@
     <p class="mt-2 text-accent">Built with HTML, Tailwind CSS, and JavaScript.</p>
   </div>
 </footer>
-
-<script>
-  particlesJS("particles-js", {
-    particles: {
-      number: { value: 300 },
-      color: { value: "#ffffff" },
-      shape: { type: "circle" },
-      opacity: { value: 0.3 },
-      size: { value: 3 },
-      line_linked: {
-        enable: true,
-        distance: 120,
-        color: "#ffffff",
-        opacity: 0.3,
-        width: 1
-      },
-      move: { enable: true, speed: 0.1 }
-    },
-    interactivity: {
-      detect_on: "canvas",
-      events: { onhover: { enable: false } }
-    },
-    retina_detect: true
-  });
-</script>
-
 
 </body>
 </html>
