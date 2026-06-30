@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Retail Sales Forecasting – Will Charles</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Will Charles – Portfolio of data science and machine learning projects. Explore predictive modeling, dashboarding, and narrative visualization.">
+  <meta name="description" content="Will Charles – A case study in my process for building a retail sales forecasting model, from a simple baseline to a benchmark-beating final result.">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,9 +26,7 @@
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
   </style>
-
-<link rel="stylesheet" href="assets/css/pallete.css">
-
+  <link rel="stylesheet" href="assets/css/pallete.css">
 </head>
 <body class="antialiased bg-site text-site">
 
@@ -43,29 +41,29 @@
     </div>
   </nav>
 
-    <main class="pt-24 pb-16 px-6 max-w-4xl mx-auto">
-    <h1 class="text-4xl font-bold mb-4 text-primary">Retail Sales Forecasting Across 45 Stores</h1>
+  <main class="pt-24 pb-16 px-6 max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold mb-4 text-primary">My Process for Building a Sales Forecasting Model</h1>
     <p class="text-lg mb-6">
-      Developed a modular forecasting system to predict weekly department-level sales across 45 stores. The pipeline incorporates time-based regression, dimensionality reduction, and post-processing adjustments to model retail behavior with seasonality and promotional effects.
+      This case study details my end-to-end process for tackling a complex retail forecasting challenge. I architected and implemented a solution that progressed from a simple baseline to a sophisticated, multi-stage pipeline. The final model successfully predicted weekly sales across 45 stores by methodically incorporating advanced feature engineering, signal denoising, and domain-specific adjustments.
     </p>
 
     <h2 class="text-xl font-semibold mt-12 mb-2">Dataset & Evaluation Metric</h2>
     <p class="mb-4">
-      This project is based on the <a href="https://www.kaggle.com/c/walmart-recruiting-store-sales-forecasting" class="text-primary hover:underline" target="_blank">Walmart Store Sales Forecasting</a> competition dataset. The data contains historical weekly sales from February 2010 to October 2012 for 45 stores across various departments, consisting of 10 time-based cross-validation folds. Each fold trained on a growing window of historical data and forecasted the subsequent two months. Each record includes the store ID, department number, date, weekly sales, and a binary flag indicating if the week includes a major holiday.
+      This project is based on the <a href="https://www.kaggle.com/c/walmart-recruiting-store-sales-forecasting" class="text-primary hover:underline" target="_blank">Walmart Store Sales Forecasting</a> competition dataset. The data contains historical weekly sales from February 2010 to October 2012 for 45 stores across various departments.
     </p>
     <p class="mb-4">
-      The primary success metric was <strong>Weighted Mean Absolute Error (WMAE)</strong>, where four key holidays—Super Bowl, Labor Day, Thanksgiving, and Christmas—are weighted five times higher than regular weeks. This metric emphasizes the business-critical need for accurate holiday predictions.
+      The primary success metric was <strong>Weighted Mean Absolute Error (WMAE)</strong>, where four key holidays—Super Bowl, Labor Day, Thanksgiving, and Christmas—are weighted five times higher than regular weeks. This metric emphasizes the business-critical need for accurate holiday predictions. To ensure robust evaluation, I used 10 time-based cross-validation folds, training on a growing window of historical data and forecasting the subsequent two months.
     </p>
 
     <h2 class="text-xl font-semibold mt-8 mb-2">Initial Data Exploration</h2>
     <p class="mb-4">
-      I began by visualizing sales patterns across each department. The chart below highlights the diversity in department behavior. Some exhibit smooth seasonality, others spike sharply around holidays, and a few show erratic trends. These early insights motivated the need for both department-specific modeling and calendar-aware features. 
+      I began by visualizing the sales patterns across several key departments. The chart below immediately highlighted the complexity of the problem. Some departments exhibited smooth, predictable seasonality, while others had sharp holiday spikes or erratic trends. This initial insight motivated my decision to use department-specific modeling and calendar-aware features from the very beginning.
     </p>
     <div class="mb-8">
       <img src="assets/images/weekly_sales_by_dept_fold10.png" alt="Department Weekly Sales" class="rounded-lg shadow-md">
       <p class="text-sm mt-2 text-center text-muted">Figure: Weekly Sales Over Time for Departments 7, 8, 16, 65, and 95</p>
     </div>
-    
+
     <h2 class="text-xl font-semibold mt-12 mb-2">The Model Evolution: A Step-by-Step Journey</h2>
     <p class="mb-6">
       My approach was iterative. I started with the simplest possible models to establish a baseline and systematically added complexity, measuring the impact of each decision on the WMAE.
@@ -74,29 +72,27 @@
     <div class="bg-muted p-6 rounded-xl shadow-md mb-8">
         <h3 class="text-2xl font-bold text-primary mb-2">Step 1: Establishing a Baseline</h3>
         <p class="mb-4">
-            First, I needed a starting point. As shown in my exploratory notebook, I implemented a naive model that simply used the last known sales figure for each store-department pair. This gave me a WMAE of <strong>2078</strong>. A slightly better seasonal model, which matched sales to the same week from the previous year, improved this to <strong>1888</strong>. These initial results proved that simple lookups were insufficient and a more robust modeling approach was necessary.
+            First, I needed a starting point. As shown in my exploratory notebook, I implemented a naive model that simply used the last known sales figure for each store-department pair. This gave me a WMAE of <strong>~2078</strong>. A slightly better seasonal model, which matched sales to the same week from the previous year, improved this to <strong>1888</strong>. These initial results proved that simple lookups were insufficient and a more robust modeling approach was necessary.
         </p>
-        <p class="text-lg font-semibold text-center">WMAE: <span class="text-red-900">2078</span> &rarr; <span class="text-red-500">1888</span></p>
+        <p class="text-lg font-semibold text-center">WMAE: <span class="text-red-500">1888</span></p>
     </div>
 
     <div class="bg-muted p-6 rounded-xl shadow-md mb-8">
         <h3 class="text-2xl font-bold text-primary mb-2">Step 2: Introducing Time-Based Regression</h3>
         <p class="mb-4">
-            Next, I fit separate linear models for each store-department combination, recognizing that different departments behave differently across stores. This granularity helped us avoid overfitting to general trends and capture local effects like store-specific promotions or regional seasonality. This approach allowed us to capture localized trends while keeping the modeling interpretable and scalable.
-            I began with a time-based regression: Weekly_Sales ~ Yr + Wk, which achieved a WMAE of <strong>1658</strong>, showing promise.
-            Adding a quadratic trend term Yr² helped model nonlinear effects and lowered WMAE to <strong>1626</strong>.
+            My next step was to build a proper regression model. I developed a function, <code>preprocess</code>, to engineer features from the 'Date' column, creating <code>Yr</code>, <code>Yr2</code>, and <code>Wk</code> variables to capture trends and seasonality. Using <code>patsy</code> and <code>statsmodels</code>, I fit an Ordinary Least Squares (OLS) model for each store-department combination. This more structured approach significantly lowered the error.
         </p>
-        <p class="text-lg font-semibold text-center">WMAE: <span class="text-orange-600">1658</span> &rarr; <span class="text-yellow-500">1626</span></p>
+        <p class="text-lg font-semibold text-center">WMAE: <span class="text-yellow-500">1658</span> &rarr; <span class="text-yellow-600">1626</span></p>
     </div>
 
     <div class="bg-muted p-6 rounded-xl shadow-md mb-8">
         <h3 class="text-2xl font-bold text-primary mb-2">Step 3: The SVD Breakthrough for Noise Reduction</h3>
         <p class="mb-4">
-            While the regression model was an improvement, its predictions were still noisy. I hypothesized that many sales figures were driven by random fluctuations rather than true signals. To address this, I implemented a denoising step using Singular Value Decomposition (SVD) in my `svd_dept` function.
+            While the regression model was an improvement, its predictions were still noisy. I hypothesized that many sales figures were driven by random fluctuations rather than true signals. To address this, I implemented a denoising step using Singular Value Decomposition (SVD) in my <code>svd_dept</code> function.
         </p>
         <ul class="list-disc list-inside mb-4 text-site space-y-2">
             <li>For each department, I created a Store × Date matrix of sales data.</li>
-            <li>I then applied `np.linalg.svd` to decompose this matrix, isolating the principal components of the sales data.</li>
+            <li>I then applied <code>np.linalg.svd</code> to decompose this matrix, isolating the principal components of the sales data.</li>
             <li>By reconstructing the matrix using only the <strong>top 8 singular components</strong>, I effectively filtered out the noise while retaining the core sales patterns.</li>
         </ul>
         <p class="mb-4">
@@ -108,11 +104,11 @@
     <div class="bg-muted p-6 rounded-xl shadow-md mb-8">
         <h3 class="text-2xl font-bold text-primary mb-2">Step 4: A Final Polish with Holiday Smoothing</h3>
         <p class="mb-4">
-            The final challenge was the holiday season (weeks 49-52), where the WMAE metric was 5x more sensitive. My SVD-enhanced model was still over-predicting sharp, brief spikes. To create a more realistic forecast, I wrote a post-processing function called `apply_shift`. For holiday weeks, this function adjusted the prediction by blending it with the previous week's sales (`85% current prediction + 15% previous week's prediction`). This small, domain-aware adjustment smoothed the volatile holiday peaks and provided the final improvement needed to beat the benchmark.
+            The final challenge was the holiday season (weeks 49-52), where the WMAE metric was 5x more sensitive. My SVD-enhanced model was still over-predicting sharp, brief spikes. To create a more realistic forecast, I wrote a post-processing function called <code>apply_shift</code>. For holiday weeks, this function adjusted the prediction by blending it with the previous week's sales (<code>85% current prediction + 15% previous week's prediction</code>). This small, domain-aware adjustment smoothed the volatile holiday peaks and provided the final improvement needed to beat the benchmark.
         </p>
         <p class="text-lg font-semibold text-center">WMAE: <span class="text-blue-500">1559.5</span></p>
     </div>
-    
+
     <h2 class="text-xl font-semibold mt-12 mb-2">Validating the Granular Approach with Cluster Analysis</h2>
     <p class="mb-6">
       To further confirm my hypothesis that a single, global model would fail, I performed cluster analysis on the sales data, grouping both stores and departments by their standardized weekly sales curves. The results, shown below, were definitive.
@@ -131,7 +127,7 @@
 
     <h2 class="text-xl font-semibold mt-12 mb-2">Final Results and Conclusion</h2>
     <p class="mb-4">
-      My final, multi-stage pipeline achieved an average WMAE of 1559.5, successfully beating the project benchmark of 1580. This project demonstrates my process: starting simple, identifying key weaknesses, and methodically engineering solutions. By combining robust statistical techniques like OLS and SVD with targeted, domain-aware adjustments, I was able to build a highly effective forecasting tool from the ground up.
+      My final, multi-stage pipeline achieved an average WMAE of <strong>1559.5</strong>, successfully beating the project benchmark of 1580. This project demonstrates my process: starting simple, identifying key weaknesses, and methodically engineering solutions. By combining robust statistical techniques like OLS and SVD with targeted, domain-aware adjustments, I was able to build a highly effective forecasting tool from the ground up.
     </p>
 
     <div class="bg-muted text-site p-6 rounded-xl shadow-md text-center max-w-md mx-auto">
